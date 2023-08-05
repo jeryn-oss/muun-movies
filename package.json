@@ -1,0 +1,26 @@
+{
+  "name": "muun-movies",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeryn-oss/muun-movies.git"
+  },
+  "author": "jeryn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeryn-oss/muun-movies/issues"
+  },
+  "homepage": "https://github.com/jeryn-oss/muun-movies#readme",
+  "dependencies": {
+    "movier": "^3.0.2"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
