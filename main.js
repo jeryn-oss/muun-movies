@@ -88,5 +88,5 @@ async function displayResults(query) {
 }
 
 function goTo(url) {
-    window.location.href = "muun-movies"+url;
+    window.location.href = url;
 }
