@@ -88,5 +88,5 @@ async function displayResults(query) {
 }
 
 function goTo(url) {
-    window.location.href = url;
+    location.href = url;
 }
