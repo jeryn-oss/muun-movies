@@ -76,7 +76,7 @@ async function displayResults(query) {
             <img class="poster" src="`+ sArray[i]["Poster"] + `" alt="img">
             <div class="title-holder">
                 <p class="title">`+ sArray[i]["Title"] + `</p>
-                <button onclick="goTo('/player.html?id=`+ sArray[i]["imdbID"] + `')">watch</button>
+                <button onclick="goTo('player.html?id=`+ sArray[i]["imdbID"] + `')">watch</button>
             </div>
         </div>
             `)
