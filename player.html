@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>movie</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="main.css">
@@ -12,13 +13,10 @@
 </head>
 
 <body>
-    <video class="jw-video jw-reset" tabindex="1" disableremoteplayback="" webkit-playsinline="" playsinline=""
-        src="blob:https://vidstream.pro/7bee1a59-040d-4c1a-8374-be74cd19b431" style="object-fit: fill;"></video>
+    <div class="player">
+        <buutton class="back-btn"><i class="fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i>back</buutton>
+    </div>
 </body>
-<script>
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    $("body").append('<iframe src="https://vidsrc.to/embed/movie/' + urlParams.get('id') + '" allow="autoplay; fullscreen" allowfullscreen="yes" frameborder="no" scrolling="no" style="width: 100%; height: 100%; overflow: hidden;"><iframe>')
-</script>
+<script src="player.js"></script>
 
 </html>
