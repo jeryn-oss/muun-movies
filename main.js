@@ -54,6 +54,7 @@ async function displayResults(query) {
         ).then(function (data) {
             return data["Search"]
         });
+        console.log(sArray);
         for (var i = 0; i < sArray.length; i++) {
             accesable = true;
 
@@ -72,13 +73,14 @@ async function displayResults(query) {
 
 
                         $(".search-results").append(`
-            <div class="movie-card">
-            <img class="poster" src="`+ sArray[i]["Poster"] + `" alt="img">
-            <div class="title-holder">
-                <p class="title">`+ sArray[i]["Title"] + `</p>
-                <button onclick="goTo('player.html?id=`+ sArray[i]["imdbID"] + `')">watch</button>
-            </div>
-        </div>
+                    <div class="movie-card">
+                        <img class="poster" src="`+ sArray[i]["Poster"] + `" alt="img">
+                            <div class="title-holder">
+                                <p class="year">`+ sArray[i]["Year"] + `</p>
+                                <p class="title">`+ sArray[i]["Title"] + `</p>
+                            <button onclick="goTo('player.html?id=`+ sArray[i]["imdbID"] + `&search=`+ urlParams.get("search") +`')">watch</button>
+                        </div>
+                    </div>
             `)
                     }
                 }
