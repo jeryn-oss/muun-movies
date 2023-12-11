@@ -47,42 +47,39 @@ $("input").on("click", function () {
 
 async function displayResults(query) {
     $(".search-results").html("")
-    for (var o = 1; o < 10; o++) {
-        let sArray = await fetch("http://www.omdbapi.com/?page=" + o + "&s=" + query + "&apikey=3bb1e43b").then(function (response) {
-            return response.json();
-        }
-        ).then(function (data) {
-            return data["Search"]
-        });
-        console.log(sArray);
-        for (var i = 0; i < sArray.length; i++) {
-            accesable = true;
+    var sArraypre = await fetch("https://jprojects.space/search?query=" + query).then(function (response) {
+        return response.json();
+    });
 
-            if (accesable) {
-                if (sArray[i]["Type"] == 'movie') {
-                    if (sArray[i]["Poster"] == "N/A") {
-                        $(".search-results").append(`
+    var sArray = await sArraypre['results']
+    console.log(sArray);
+    for (var i = 0; i < sArray.length; i++) {
+        accesable = true;
+
+        if (accesable) {
+            if (sArray[i]["type"] == 'movie' || sArray[i]["type"] == 'tvSeries') {
+                if (sArray[i]["image"] == "N/A") {
+                    $(".search-results").append(`
             <div class="movie-card">
             <div class="poster-error"><i class="fa-solid fa-triangle-exclamation"><p class="error">error loading photo</p></i></div>
             <div class="title-holder">
-                <p class="title">`+ sArray[i]["Title"] + `</p>
-                <button onclick="goTo('/player.html?id=`+ sArray[i]["imdbID"] + `')">watch</button>
+                <p class="title">`+ sArray[i]["title"] + `</p>
+                <button onclick="goTo('/player.html?id=`+ sArray[i]["id"] + `')">watch</button>
             </div>
         </div>`)
-                    } else {
+                } else {
 
 
-                        $(".search-results").append(`
+                    $(".search-results").append(`
                     <div class="movie-card">
-                        <img class="poster" src="`+ sArray[i]["Poster"] + `" alt="img">
+                        <img class="poster" src="`+ sArray[i]["image"] + `" alt="img">
                             <div class="title-holder">
-                                <p class="year">`+ sArray[i]["Year"] + `</p>
-                                <p class="title">`+ sArray[i]["Title"] + `</p>
-                            <button onclick="goTo('player.html?id=`+ sArray[i]["imdbID"] + `&search=`+ urlParams.get("search") +`')">watch</button>
+                                <p class="year">`+ sArray[i]["year"] + ` - ` + sArray[i]['type'] +`</p>
+                                <p class="title">`+ sArray[i]["title"] + `</p>
+                            <button onclick="goTo('player.html?id=`+ sArray[i]["id"] + `&search=` + urlParams.get("search") + `&type=`+ sArray[i]['type'] +`')">watch</button>
                         </div>
                     </div>
             `)
-                    }
                 }
             }
         }
