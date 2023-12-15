@@ -1,6 +1,7 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
+
 async function start() {
     if (!urlParams.has('test')) {
         if (!urlParams.has('id')) {
@@ -10,20 +11,40 @@ async function start() {
     //check if has id
     if (urlParams.has('type')) {
         if (urlParams.get('type') == "movie") {
-            $(".player").append('<iframe src="https://vidsrc.to/embed/movie/' + urlParams.get('id') + '" ><iframe>')
-
-            $(".back-btn").on("click", function () {
-                window.location.href = "index.html?search=" + urlParams.get('search');
-            });
-        }
-        else if (urlParams.get('type') == "tvSeries") {
+            //set video src to first episode
+            $(".video_src").attr("src", "https://vidsrc.to/embed/movie/" + urlParams.get('id'));
             var id = urlParams.get('id');
-            seasons = await fetch("https://jprojects.space/title/" + id).then(function (response) {
+            var title = await fetch("https://jprojects.space/title/" + id).then(function (response) {
+                return response.json();
+            })
+            title = title['title'];
+            $(".player").append(`
+                <div class="title-holder-tv">
+                    <h1 class="title-tv">` + title + `</h1>
+                </div>
+                `)
+            $(".player").append(`
+                <div class="series-viewer">
+                    <h2>Movie</h2>
+                    <div class="button-holder">
+                    <button class="ep-btn"> `+ title +` </button>
+                    </div>
+                </div>
+                `)
+        } else if (urlParams.get('type') == "tvSeries") {
+            //set video src to first episode
+            $(".video_src").attr("src", "https://vidsrc.to/embed/tv/" + urlParams.get('id') + "/1/1");
+            var id = urlParams.get('id');
+            var seasons = await fetch("https://jprojects.space/title/" + id).then(function (response) {
                 return response.json();
             })
             title = seasons['title'];
             seasons = seasons['all_seasons'].length;
-            console.log(seasons);
+            $(".player").append(`
+                <div class="title-holder-tv">
+                    <h1 class="title-tv">` + title + `</h1>
+                </div>
+                `)
             for (var i = 1; i < seasons + 1; i++) {
                 episodes = await fetch("https://jprojects.space/title/" + id + "/season/" + i).then(function (response) {
                     return response.json();
@@ -33,14 +54,14 @@ async function start() {
                 list_episodes = ``;
                 for (var j = 0; j < episodes.length; j++) {
                     list_episodes += `
-                    <button> `+ (j+1) +` - `+ episodes[j]["title"] +` </button>
+                    <button onclick="watchEpisode('` + id + `/` + i + `/` + (j + 1) + `')" class="ep-btn"> ` + (j + 1) + ` - ` + episodes[j]["title"] + ` </button>
                     `
                 }
                 $(".player").append(`
                 <div class="series-viewer">
-                     <h2>season - `+ i +`</h2>
+                     <h2>season - ` + i + `</h2>
                     <div class="button-holder">
-               `+ list_episodes +`
+               ` + list_episodes + `
                     </div>
                 </div>
                 `)
@@ -49,8 +70,12 @@ async function start() {
     }
 }
 
-function watchEpisode(src){
-    location.href = src;
+function watchEpisode(src) {
+    $(".video_src").attr("src", "https://vidsrc.to/embed/tv/" + src);
+}
+
+function backTosearch() {
+    window.location.href = "index.html?search=" + urlParams.get('search');
 }
 
 start();
