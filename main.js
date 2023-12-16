@@ -37,6 +37,7 @@ $(".clear-search").on("click", function () {
     urlParams.delete('search');
     window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
     $(".searchbar").val("");
+    $(".search-results").html("");
 });
 
 $("input").on("click", function () {
