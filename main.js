@@ -58,15 +58,8 @@ async function displayResults(query) {
 
         if (accesable) {
             if (sArray[i]["type"] == 'movie' || sArray[i]["type"] == 'tvSeries') {
-                if (sArray[i]["image"] == "N/A") {
-                    $(".search-results").append(`
-            <div class="movie-card">
-            <div class="poster-error"><i class="fa-solid fa-triangle-exclamation"><p class="error">error loading photo</p></i></div>
-            <div class="title-holder">
-                <p class="title">`+ sArray[i]["title"] + `</p>
-                <button onclick="goTo('/player.html?id=`+ sArray[i]["id"] + `')">watch</button>
-            </div>
-        </div>`)
+                if (sArray[i]["image"] == null) {
+                    
                 } else {
 
 
