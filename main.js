@@ -1,4 +1,3 @@
-
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 if (urlParams.has('search')) {
@@ -18,16 +17,28 @@ $(".search-btn").on("click", function () {
     }
 });
 
+$(".searchbar").on("input", function () {
+    if ($(".searchbar").val() == "") {
+        $(".search-results").removeClass("active-search-results");
+        urlParams.delete('search');
+        window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
+        $(".searchbar").val("");
+        $(".search-results").html("");
+    }
+});
+
 $('body').keypress(function (e) {
     var key = e.which;
-    if ($(".searchbar").val() != "") {
-        if (key == 13)  // the enter key code
-        {
-            $(".search-results").addClass("active-search-results");
-            urlParams.set('search', $(".searchbar").val());
-            window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
-            displayResults(urlParams.get('search'));
-            return false;
+    if ($(".searchbar").is(":focus")) {
+        if ($(".searchbar").val() != "") {
+            if (key == 13) // the enter key code
+            {
+                $(".search-results").addClass("active-search-results");
+                urlParams.set('search', $(".searchbar").val());
+                window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
+                displayResults(urlParams.get('search'));
+                return false;
+            }
         }
     }
 });
@@ -60,17 +71,17 @@ async function displayResults(query) {
         if (accesable) {
             if (sArray[i]["type"] == 'movie' || sArray[i]["type"] == 'tvSeries') {
                 if (sArray[i]["image"] == null) {
-                    
+
                 } else {
 
 
                     $(".search-results").append(`
                     <div class="movie-card">
-                        <img class="poster" src="`+ sArray[i]["image"] + `" alt="img">
+                        <img class="poster" src="` + sArray[i]["image"] + `" alt="img">
                             <div class="title-holder">
-                                <p class="year">`+ sArray[i]["year"] + ` - ` + sArray[i]['type'] +`</p>
-                                <p class="title">`+ sArray[i]["title"] + `</p>
-                            <button onclick="goTo('player.html?id=`+ sArray[i]["id"] + `&search=` + urlParams.get("search") + `&type=`+ sArray[i]['type'] +`')">watch</button>
+                                <p class="year">` + sArray[i]["year"] + ` - ` + sArray[i]['type'] + `</p>
+                                <p class="title">` + sArray[i]["title"] + `</p>
+                            <button onclick="goTo('player.html?id=` + sArray[i]["id"] + `&search=` + urlParams.get("search") + `&type=` + sArray[i]['type'] + `')">watch</button>
                         </div>
                     </div>
             `)
@@ -78,6 +89,18 @@ async function displayResults(query) {
             }
         }
     }
+    //add class active to all elements with class movie-card
+    $(".movie-card").addClass("active");
+
+    /*/for every .movie-card.active ad "    animation-delay: (n * .5)s;
+    -webkit-animation-delay: (n * .5)s;"
+    /*/
+    var delay = 0;
+    $(".movie-card.active").each(function () {
+        $(this).css("animation-delay", delay + "s");
+        $(this).css("-webkit-animation-delay", delay + "s");
+        delay += 0.1;
+    });
 }
 
 function goTo(url) {
