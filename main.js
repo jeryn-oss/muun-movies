@@ -5,7 +5,8 @@ if (urlParams.has('search')) {
     $(".searchbar").val(urlParams.get('search'));
     displayResults(urlParams.get('search'));
 }
-$(".player").append('<iframe src="https://vidsrc.to/embed/movie/' + urlParams.get('id') + '" allow="autoplay; fullscreen" allowfullscreen="yes" frameborder="no" scrolling="no" ><iframe>')
+
+//add install event chrome
 
 
 $(".search-btn").on("click", function () {
@@ -59,24 +60,34 @@ $("input").on("click", function () {
 
 async function displayResults(query) {
     $(".search-results").html("")
+    $(".no-results").remove();
     var sArraypre = await fetch("https://jprojects.space/search?query=" + query).then(function (response) {
         return response.json();
     });
 
     var sArray = await sArraypre['results']
-    console.log(sArray);
-    for (var i = 0; i < sArray.length; i++) {
-        accesable = true;
+    console.log(await sArray);
+    if (sArray.length == 0) {
+        console.log("no results");
+        $(".search-results").append(`
+        <div class="no-results">
+            <h2>No results found</h2>
+        </div>
+        `)
+        setTimeout(function () {
+            $(".no-results").addClass("active");
+        }, 100);
+    } else {
+        for (var i = 0; i < sArray.length; i++) {
+            accesable = true;
 
-        if (accesable) {
-            if (sArray[i]["type"] == 'movie' || sArray[i]["type"] == 'tvSeries') {
-                if (sArray[i]["image"] == null) {
+            if (accesable) {
+                if (sArray[i]["type"] == 'movie' || sArray[i]["type"] == 'tvSeries') {
+                    if (sArray[i]["image"] == null) {
 
-                } else {
-
-
-                    $(".search-results").append(`
-                    <div class="movie-card">
+                    } else {
+                        $(".search-results").append(`
+                    <div onclick="goTo('player.html?id=` + sArray[i]["id"] + `&search=` + urlParams.get("search") + `&type=` + sArray[i]['type'] + `')" class="movie-card">
                         <img class="poster" src="` + sArray[i]["image"] + `" alt="img">
                             <div class="title-holder">
                                 <p class="year">` + sArray[i]["year"] + ` - ` + sArray[i]['type'] + `</p>
@@ -85,6 +96,7 @@ async function displayResults(query) {
                         </div>
                     </div>
             `)
+                    }
                 }
             }
         }
@@ -98,7 +110,10 @@ async function displayResults(query) {
     var delay = 0;
     $(".movie-card.active").each(function () {
         $(this).css("animation-delay", delay + "s");
-        $(this).css("-webkit-animation-delay", delay + "s");
+        $(this).css("-webkit-animation-delay", delay + "s"); /* Safari and Chrome */
+        $(this).css("-moz-animation-delay", delay + "s"); /* Firefox */
+        $(this).css("-o-animation-delay", delay + "s"); /* Opera */
+        $(this).css("-ms-animation-delay", delay + "s"); /* Internet Explorer */
         delay += 0.1;
     });
 }

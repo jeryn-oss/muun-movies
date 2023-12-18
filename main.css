@@ -164,6 +164,16 @@ input:focus+.search-line {
     height: 100%;
 }
 
+.no-results h2{
+    opacity: 0;
+    color: white;
+    transition: ease-in-out .3s;
+}
+
+.no-results.active h2{
+    opacity: 1;
+}
+
 .movie-card {
     background: #292929;
     opacity: 0;
