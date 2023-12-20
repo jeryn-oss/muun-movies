@@ -1,6 +1,15 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
+//catch redirect or link open and block it
+$(document).ready(function () {
+    $("a").click(function (event) {
+        event.preventDefault();
+    });
+});
+
+//inside iframes too
+
 
 async function start() {
     if (!urlParams.has('test')) {
@@ -25,8 +34,7 @@ async function start() {
                 `)
             $(".player").append(`
                 <div class="series-viewer">
-                    <h2>Movie</h2>
-                    <div class="button-holder">
+                    <div style="margin-top:10px" class="button-holder">
                     <button class="ep-btn"> `+ title +` </button>
                     </div>
                 </div>
