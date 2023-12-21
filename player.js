@@ -5,6 +5,7 @@ const urlParams = new URLSearchParams(queryString);
 $(document).ready(function () {
     $("a").click(function (event) {
         event.preventDefault();
+        console.log("blocked pop up");
     });
 });
 
