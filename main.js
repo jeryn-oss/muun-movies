@@ -7,8 +7,6 @@ if (urlParams.has('search')) {
 }
 
 //add install event chrome
-
-
 $(".search-btn").on("click", function () {
     if ($(".searchbar").val() != "") {
         $(".search-results").addClass("active-search-results");
