@@ -449,9 +449,43 @@ input:focus+.search-line {
     transition: ease-in-out 0.1s;
 }
 
+.button-holder-ep {
+    display: flex;
+    padding: 0px;
+    width: 100%;
+    justify-content: end;
+}
+
+.button-holder-ep button {
+    margin: 5px;
+    width: 260px;
+    height: 30px;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border: none;
+    background: #434343;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px;
+    transition: ease-in-out 0.1s;
+}
+
+.button-holder-ep button:hover {
+    background: #333;
+    cursor: pointer;
+}
+
+.button-holder-ep button:active {
+    background: rgb(24, 24, 24);
+    cursor: pointer;
+}
+
 .video {
     background: none;
     display: flex;
+    justify-content: center;
+    flex-direction: column;
     align-items: center;
     padding: 0;
     margin: 10px;

@@ -1,7 +1,6 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
-//catch redirect or link open and block it
 $(document).ready(function () {
     $("a").click(function (event) {
         event.preventDefault();
@@ -9,10 +8,9 @@ $(document).ready(function () {
     });
 });
 
-
-
-//inside iframes too
-
+var episode = 1;
+var season = 1;
+var nextAndBack = []
 
 async function start() {
     if (!urlParams.has('test')) {
@@ -38,7 +36,7 @@ async function start() {
             $(".player").append(`
                 <div class="series-viewer">
                     <div style="margin-top:10px" class="button-holder">
-                    <button class="ep-btn"> `+ title +` </button>
+                    <button class="ep-btn"> ` + title + ` </button>
                     </div>
                 </div>
                 `)
@@ -57,10 +55,11 @@ async function start() {
                 </div>
                 `)
             for (var i = 1; i < seasons + 1; i++) {
-                episodes = await fetch("https://jprojects.space/title/" + id + "/season/" + i).then(function (response) {
+                var episodes = await fetch("https://jprojects.space/title/" + id + "/season/" + i).then(function (response) {
                     return response.json();
                 })
                 episodes = episodes['episodes'];
+                nextAndBack.push(episodes.length);
                 console.log(episodes);
                 list_episodes = ``;
                 for (var j = 0; j < episodes.length; j++) {
@@ -83,10 +82,46 @@ async function start() {
 
 function watchEpisode(src) {
     $(".video_src").attr("src", "https://vidsrc.to/embed/tv/" + src);
+    episode = src.split("/")[2];
+    season = src.split("/")[1];
 }
 
 function backTosearch() {
     window.location.href = "index.html?search=" + urlParams.get('search');
 }
+
+function nextEpisode() {
+    if (episode < nextAndBack[season - 1]) {
+        episode++;
+        $(".video_src").attr("src", "https://vidsrc.to/embed/tv/" + urlParams.get('id') + "/" + season + "/" + episode);
+    } else if (nextAndBack[season]) {
+        if (season - 1 < nextAndBack.length) {
+            season++;
+            episode = 1;
+            $(".video_src").attr("src", "https://vidsrc.to/embed/tv/" + urlParams.get('id') + "/" + season + "/" + episode);
+        }
+    }
+}
+
+function backEpisode() {
+    if (episode > 1) {
+        episode--;
+        $(".video_src").attr("src", "https://vidsrc.to/embed/tv/" + urlParams.get('id') + "/" + season + "/" + episode);
+    } else if (season > 1) {
+        season--;
+        episode = nextAndBack[season - 1];
+        $(".video_src").attr("src", "https://vidsrc.to/embed/tv/" + urlParams.get('id') + "/" + season + "/" + episode);
+    }
+}
+
+const beforeUnloadHandler = (event) => {
+    // Recommended
+    event.preventDefault();
+
+    // Included for legacy support, e.g. Chrome/Edge < 119
+    event.returnValue = true;
+};
+
+
 
 start();
