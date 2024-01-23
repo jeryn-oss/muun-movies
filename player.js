@@ -1,13 +1,6 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
-$(document).ready(function () {
-    $("a").click(function (event) {
-        event.preventDefault();
-        console.log("blocked pop up");
-    });
-});
-
 var episode = 1;
 var season = 1;
 var nextAndBack = []
@@ -21,6 +14,7 @@ async function start() {
     //check if has id
     if (urlParams.has('type')) {
         if (urlParams.get('type') == "movie") {
+            $('.button-holder-ep').remove();
             //set video src to first episode
             $(".video_src").attr("src", "https://vidsrc.to/embed/movie/" + urlParams.get('id'));
             var id = urlParams.get('id');

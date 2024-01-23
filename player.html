@@ -20,26 +20,8 @@
     </div>
     <div class="video">
         <iframe class="video_src" src="" frameborder="0"></iframe>
-        <div class="button-holder-ep"><button onclick="backEpisode()" class="back">lste episode</button><button onclick="nextEpisode()" class="next_btn">next episode</button></div>
+        <div class="button-holder-ep"><button onclick="backEpisode()" class="back">last episode</button><button onclick="nextEpisode()" class="next_btn">next episode</button></div>
     </div>
 </body>
 <script src="player.js"></script>
-<script>
-    // Function to prevent links from causing redirection
-    document.addEventListener('DOMContentLoaded', function () {
-        var videoIframe = document.querySelector('.video_src');
-
-        videoIframe.addEventListener('load', function () {
-            // Get all anchor tags within the iframe
-            var anchors = videoIframe.contentDocument.getElementsByTagName('a');
-
-            // Prevent default behavior for each anchor click
-            for (var i = 0; i < anchors.length; i++) {
-                anchors[i].addEventListener('click', function (event) {
-                    event.preventDefault();
-                });
-            }
-        });
-    });
-</script>
 </html>
