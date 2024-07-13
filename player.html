@@ -11,17 +11,38 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="main.css">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="nice-select2/dist/js/nice-select2.js"></script>
+    <link rel="stylesheet" href="nice-select2/dist/css/nice-select2.css">
 </head>
 
 <body class="player-screen">
+    <div class="video-holder">
+        <h2 class="episode-title"></h2>
+        <iframe allowfullscreen id="videoIframe" class="video_src" src="" frameborder="0">
+        </iframe>
+
+        <div class="information">
+            <div class="flex-row">
+                <h1 class="title-movie">Lorem, ipsum.</h1>
+                <p class="year-movie"></p>
+            </div>
+            <p class="plot-movie" style="max-width: 400px;"></p>
+        </div>
+    </div>
     <div class="player">
-        <button onclick="backTosearch()" class="back-btn"><i class="fa-solid fa-caret-left"></i> back to search</button>
+        <div class="player-holder">
+            <button onclick="backToSearch()" class="back-btn">
+                <span class="material-symbols-outlined">
+                    keyboard_backspace
+                </span>
+                back to search
+            </button>
+        </div>
     </div>
-    <div class="video">
-        <iframe  allowfullscreen class="video_src" src="" frameborder="0"></iframe>
-        <div class="button-holder-ep"><button onclick="backEpisode()" class="back">last episode</button><button onclick="nextEpisode()" class="next_btn">next episode</button></div>
-    </div>
+
 </body>
 <script src="player.js"></script>
+
 </html>

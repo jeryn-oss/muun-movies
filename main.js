@@ -85,13 +85,14 @@ async function displayResults(query) {
 
                     } else {
                         $(".search-results").append(`
-                    <div onclick="goTo('player.html?id=` + sArray[i]["id"] + `&search=` + urlParams.get("search") + `&type=` + sArray[i]['type'] + `')" class="movie-card">
-                        <img class="poster" src="` + sArray[i]["image"] + `" alt="img">
-                            <div class="title-holder">
+                    <div onclick="goTo('player.html?id=` + sArray[i]["id"] + `&search=` + urlParams.get("search") + `&type=` + sArray[i]['type'] + `')" class="movie-card" style="background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.0), rgba(0, 0, 0, 1) 80%), url(` + sArray[i]['image'] + `)">
+                                <span class="blur"></span>
+                                <span class="play-button material-symbols-outlined">
+                                    play_circle
+                                </span>
                                 <p class="year">` + sArray[i]["year"] + ` - ` + sArray[i]['type'] + `</p>
                                 <p class="title">` + sArray[i]["title"] + `</p>
-                            <button onclick="goTo('player.html?id=` + sArray[i]["id"] + `&search=` + urlParams.get("search") + `&type=` + sArray[i]['type'] + `')">watch</button>
-                        </div>
+        
                     </div>
             `)
                     }
