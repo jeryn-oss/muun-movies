@@ -46,43 +46,19 @@ body {
 .search {
     background: none;
     border: solid 1px #27272a;
-    border-radius: 5px;
+    border-radius: 20px;
     color: #27272a;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     font-size: 16px;
+    line-height: 40px;
     height: 40px;
-    width: 50%;
+    width: 100%;
     overflow: hidden;
 }
-
-.clear-search {
-    background: #000000;
-    border: 1px solid #27272a;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 13px;
-    height: 40px;
-    width: 50px;
-    margin-right: 10px;
-    transition: ease-in-out 0.3s;
-}
-
-.clear-search:hover {
-    background: #27272a;
-    cursor: pointer;
-}
-
-.clear-search:active {
-    background: rgb(80, 80, 80);
-    cursor: pointer;
-}
-
 input {
     background: none;
     border: none;
@@ -106,36 +82,11 @@ input {
     margin-top: 20px;
 }
 
-.search-btn {
-    background: #000000;
-    border: 1px solid #27272a;
-    font-size: 16px;
-    text-align: center;
-    margin-left: 10px;
-    padding: 0;
-    height: 40px;
-    border-radius: 5px;
-    width: 10%;
-    padding-left: 10px;
-    padding-right: 10px;
-    min-width: fit-content;
-    transition: ease-in-out 0.3s;
-}
-
-.search-btn:hover {
-    background: #27272a;
-    cursor: pointer;
-}
-
-.search-btn:active {
-    background: rgb(80, 80, 80);
-    cursor: pointer;
-}
-
 .search-line {
     width: 0px;
     height: 1px;
-    background: #c9c9c9;
+    scale: .2;
+    background: #ffffff;
     transition: cubic-bezier(0.075, 0.82, 0.165, 1) .5s;
 }
 
@@ -144,7 +95,7 @@ input:focus {
 }
 
 input:focus+.search-line {
-    width: 100%;
+    width: 500%;
 }
 
 
@@ -335,13 +286,14 @@ input:focus+.search-line {
 
 .player {
     height: 100vh;
-    width: 800px;
+    min-width: 450px;
     padding-top: 60px;
     padding-right: 20px;
     display: flex;
     overflow-y: scroll;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .back-btn-movie {
@@ -546,6 +498,10 @@ input:focus+.search-line {
 
 .episode-title {
     margin: 2px;
+    max-width: 390px;
+    text-wrap:nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 
@@ -582,8 +538,16 @@ input:focus+.search-line {
 .flex-row {
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    align-items: start;
+    justify-content: center;
+    align-items: center;
+    max-width: 60%;
+    
+}
+
+.year-movie {
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
 }
 
 .plot-movie {
@@ -594,7 +558,7 @@ input:focus+.search-line {
     min-width: 200px;
     height: 100px;
     align-self: center;
-    transform: translateX(-2px);
+    transform: translateX(-1px);
     border-radius: 5px 0 0 5px;
     margin-right: 10px;
     background-position: center;
@@ -680,6 +644,7 @@ input:focus+.search-line {
     align-items: left;
     justify-content: flex-start;
     padding-top: 10px;
+    padding-right: 10px;
     width: 100%;
 }
 
@@ -689,9 +654,16 @@ input:focus+.search-line {
     text-align: left;
 }
 
+.ep-info p:nth-child(2) {
+    max-height: 65px;
+    overflow: hidden;
+}
+
 .small {
     font-size: 10px;
 }
+
+
 
 .fake-loader {
     position: fixed;
@@ -702,4 +674,48 @@ input:focus+.search-line {
     height: 1px; /* Adjust height as needed */
     background-color: rgb(255, 255, 255); /* Loader color */
     transition: 1s cubic-bezier(0.4, 0.0, 0.2, 1); /* Smooth animation to the right */
+}
+
+@media screen and (max-width: 860px) {
+    .player-screen{
+        flex-direction: column;
+        align-items: center;
+        justify-self: center;
+        justify-content: center;
+        align-self: center;
+    }
+    .flex-row {
+        justify-content: center;
+        align-items: center;
+    }
+    .plot-movie {
+        display: none;
+    }
+    .player-holder {
+        padding-bottom: 0;
+        margin-bottom: 0;
+        min-width: none;
+        height: 100%;
+    }
+    .player {
+        padding: 10px;
+        min-width: 0;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+    .video-holder
+    {
+        padding: 10px;
+        max-width: 400px;
+    }
+    .back-btn {
+        
+        width: 100%;
+    }
+}
+
+@media screen and (max-height: 500px) {
+   .information{
+        display: none;
+   }
 }

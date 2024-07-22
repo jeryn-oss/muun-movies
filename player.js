@@ -51,7 +51,6 @@ async function start() {
             var info = await fetch("https://jprojects.space/title/" + id).then(function (response) {
                 return response.json();
             })
-            console.log(info);
             var title = info['title'];
             var seasons = info['all_seasons'].length;
             $(".title-movie").text(title + " - " + info['year']);
@@ -62,11 +61,6 @@ async function start() {
                 <select id="select" class="select wide">
                 </select>
                 `)
-            for (var i = 1; i < seasons + 1; i++) {
-                $(".select").append(`
-                <option value="` + i + `">Season ` + i + `</option>
-                `)
-            }
             select = NiceSelect.bind(document.getElementById('select'));
             for (var i = 1; i < seasons + 1; i++) {
                 var episodes = await fetch("https://jprojects.space/title/" + id + "/season/" + i).then(function (response) {
@@ -75,35 +69,24 @@ async function start() {
                 if (i == 1) {
                     $(".episode-title").text(episodes['episodes'][0]['title'])
                 }
-
-                try {
-                    if (episodes['episodes'].length == 0) {
-                        window.location.href = "index.html"
-                    }
-                } catch (error) {
-                    console.log(error);
-                    $(".player-holder").append(`
-                        <div class="episodes">
-                            ` + episodes_list[0] + `
-                        </div> 
+                if (episodes["episodes"] == undefined) {
+                    break
+                } else {
+                    $(".select").append(`
+                        <option value="` + i + `">Season ` + i + `</option>
                         `)
-                    $(".episode").first().addClass('active');
-                    return;
+                    select.update()
                 }
-                
 
                 episodes = episodes['episodes'];
-        
-                console.log(episodes);
                 nextAndBack.push(episodes.length);
-                console.log(episodes[0]);
                 list_episodes = ``;
                 for (var j = 0; j < episodes.length; j++) {
                     if (j == 0) {
                         list_first_episodes.push(episodes[j]['title']);
                     }
                     list_episodes += `
-                    <div class="episode" onclick="watchEpisode('` + id + `/` + i + `/` + (j + 1) + `', '` + episodes[j]["title"] + `')">
+                    <div class="episode" onclick="watchEpisode('` + id + `/` + i + `/` + (j + 1) + `', '${episodes[j]["title"].replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/`/g, '\\`')}')">
                         <div class="ep-image" style="background-image: url('` + episodes[j]["image"] + `')"> 
                         <span class="blur-episode"></span>
                         <span class="play-button-episode material-symbols-outlined">
@@ -118,12 +101,16 @@ async function start() {
                     `
                 }
                 episodes_list.push(list_episodes);
+                if (i == 1) {
+                    $(".player-holder").append(`
+                        <div class="episodes">
+                            ` + episodes_list[0] + `
+                        </div> 
+                        `)
+                }
+                await real_loader((seasons), i);
             }
-            $(".player-holder").append(`
-            <div class="episodes">
-                ` + episodes_list[0] + `
-            </div> 
-            `)
+
             //set video first ep to active
             $(".episode").first().addClass('active');
         }
@@ -149,6 +136,11 @@ $('body').on('click', '.episode', function () {
     $(this).siblings().removeClass('active');
 });
 
+$('body').on('', '.back-btn', function () {
+
+});
+
+
 async function changeSeason() {
     fake_loader();
     await delay(1000);
@@ -157,11 +149,43 @@ async function changeSeason() {
     $(".episode-title").text(list_first_episodes[season - 1]);
     $(".episodes").html(episodes_list[season - 1]);
     //set video first ep to active
+    //set episodes scroll to top
+    $('.episodes').animate({
+        scrollTop: 0
+    }, 'fast');
     $(".episode").first().addClass('active');
     $(".video_src").attr("src", "https://vidsrc.to/embed/tv/" + urlParams.get('id') + "/" + season + "/1");
 }
 
+async function real_loader(notches, current) {
+    var span = 0;
+    if (current == 1) {
+        var span = document.createElement("span");
+        span.classList.add("fake-loader");
+        document.body.appendChild(span);
+    } else {
+        span = $(".fake-loader");
+        console.log(span)
+    }
+    // Trigger the animation after appending to ensure it starts from left: 0
+    setTimeout(function () {
+        $(span).css("width", (current / notches) * 100 + "%");
+    }, 100); // A slight delay to ensure the CSS is applied
 
+    //fade out the span after the animation duration
+    if (current == notches) {
+        setTimeout(function () {
+            $(span).css("opacity", "0");
+        }, 1100); // Slightly longer than the CSS animation to ensure it completes
+
+        // Remove the span after the animation duration
+        setTimeout(function () {
+            $(span).remove();
+        }, 2100); // Slightly longer than the CSS animation to ensure it completes
+
+    }
+
+}
 
 function fake_loader() {
     $('.video_src').attr('src', '');

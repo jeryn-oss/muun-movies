@@ -1,20 +1,14 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 if (urlParams.has('search')) {
-    $(".search-results").addClass("active-search-results");
-    $(".searchbar").val(urlParams.get('search'));
-    displayResults(urlParams.get('search'));
-}
-
-//add install event chrome
-$(".search-btn").on("click", function () {
-    if ($(".searchbar").val() != "") {
+    if (urlParams.get('search') != "") {
         $(".search-results").addClass("active-search-results");
-        urlParams.set('search', $(".searchbar").val());
-        window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
+        $(".searchbar").val(urlParams.get('search'));
         displayResults(urlParams.get('search'));
     }
-});
+}
+
+
 
 $(".searchbar").on("input", function () {
     if ($(".searchbar").val() == "") {
@@ -27,44 +21,47 @@ $(".searchbar").on("input", function () {
 });
 
 $('body').keypress(function (e) {
-    var key = e.which;
+    //let default behavior happen when key is pressed in searchbar
+    //if backspace call displayResults
     if ($(".searchbar").is(":focus")) {
-        if ($(".searchbar").val() != "") {
-            if (key == 13) // the enter key code
-            {
-                $(".search-results").addClass("active-search-results");
+        // Immediately return true to allow the default behavior (character input)
+        // The rest of the logic will be executed after the character has been inputted
+        setTimeout(function () {
+            $(".search-results").addClass("active-search-results");
+            urlParams.set('search', $(".searchbar").val());
+            window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
+            displayResults($(".searchbar").val());
+        }, 0);
+        return true; // This ensures the key press event is not blocked
+    }
+});
+
+//keydownbackspace
+
+$('body').keydown(function (e) {
+
+    if (e.key == "Backspace") {
+        if ($(".searchbar").val() == "") {
+            // Immediately return true to allow the default behavior (character input)
+            // The rest of the logic will be executed after the character has been inputted
+            setTimeout(function () {
                 urlParams.set('search', $(".searchbar").val());
                 window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
-                displayResults(urlParams.get('search'));
-                return false;
-            }
+                displayResults($(".searchbar").val());
+            }, 0);
         }
     }
 });
 
-$(".clear-search").on("click", function () {
-    $(".search-results").removeClass("active-search-results");
-    urlParams.delete('search');
-    window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
-    $(".searchbar").val("");
-    $(".search-results").html("");
-});
-
-$("input").on("click", function () {
-    $(".search-results").removeClass("active-search-results");
-    urlParams.delete('search');
-    window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
-});
-
 async function displayResults(query) {
-    $(".search-results").html("")
-    $(".no-results").remove();
-    var sArraypre = await fetch("https://jprojects.space/search?query=" + query).then(function (response) {
+
+    var sArraypre = await fetch("https://jprojects.space/search?query=" + query + "&page=20").then(function (response) {
         return response.json();
     });
 
     var sArray = await sArraypre['results']
-    console.log(await sArray);
+    $(".search-results").html("")
+    $(".no-results").remove();
     if (sArray.length == 0) {
         console.log("no results");
         $(".search-results").append(`
@@ -74,7 +71,7 @@ async function displayResults(query) {
         `)
         setTimeout(function () {
             $(".no-results").addClass("active");
-        }, 100);
+        }, 0);
     } else {
         for (var i = 0; i < sArray.length; i++) {
             accesable = true;
@@ -113,7 +110,7 @@ async function displayResults(query) {
         $(this).css("-moz-animation-delay", delay + "s"); /* Firefox */
         $(this).css("-o-animation-delay", delay + "s"); /* Opera */
         $(this).css("-ms-animation-delay", delay + "s"); /* Internet Explorer */
-        delay += 0.1;
+        delay += 0.05;
     });
 }
 
