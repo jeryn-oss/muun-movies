@@ -154,7 +154,7 @@ async function changeSeason() {
         scrollTop: 0
     }, 'fast');
     $(".episode").first().addClass('active');
-    $(".video_src").attr("src", "https://"+ videoHolder +"/embed/tv" + urlParams.get('id') + "/" + season + "/1");
+    $(".video_src").attr("src", "https://"+ videoHolder +"/embed/tv/" + urlParams.get('id') + "/" + season + "/1");
 }
 
 async function real_loader(notches, current) {

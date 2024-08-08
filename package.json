@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jeryn-oss/muun-movies#readme",
   "dependencies": {
+    "devtools-detector": "^2.0.20",
     "jsdom": "^24.1.0",
     "movier": "^3.0.2"
   },

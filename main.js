@@ -34,6 +34,7 @@ $('body').keypress(function (e) {
         }, 0);
         return true; // This ensures the key press event is not blocked
     }
+    
 });
 
 //keydownbackspace
